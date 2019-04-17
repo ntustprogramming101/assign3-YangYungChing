@@ -8,12 +8,28 @@ final int START_BUTTON_X = 248;
 final int START_BUTTON_Y = 360;
 
 PImage title, gameover, startNormal, startHovered, restartNormal, restartHovered;
-PImage bg, soil8x24;
+PImage bg,lifeImage,cabbageImage,groundhogImage,stone1Image,stone2Image;
+
+boolean upPressed, downPressed, rightPressed, leftPressed;
 
 // For debug function; DO NOT edit or remove this!
 int playerHealth = 0;
 float cameraOffsetY = 0;
 boolean debugMode = false;
+int life=2,size=70;
+
+float cabbageX=floor(random(0,8))*80;
+float cabbageY=floor(random(2,6))*80;
+
+float groundhogX=320;
+float groundhogY=80;
+
+
+PImage soilImage[] = new PImage[6];
+int soilW=80,soilH=80;
+
+int count=8;
+
 
 void setup() {
 	size(640, 480, P2D);
@@ -25,8 +41,25 @@ void setup() {
 	startHovered = loadImage("img/startHovered.png");
 	restartNormal = loadImage("img/restartNormal.png");
 	restartHovered = loadImage("img/restartHovered.png");
-	soil8x24 = loadImage("img/soil8x24.png");
+	
+  lifeImage=loadImage("img/life.png");
+  cabbageImage=loadImage("img/cabbage.png");
+  groundhogImage=loadImage("img/groundhogIdle.png");
+  stone1Image=loadImage("img/stone1.png");
+  stone2Image=loadImage("img/stone2.png");
+
+  
+  soilImage[0]=loadImage("img/soil0.png");
+  soilImage[1]=loadImage("img/soil1.png");
+  soilImage[2]=loadImage("img/soil2.png");
+  soilImage[3]=loadImage("img/soil3.png");
+  soilImage[4]=loadImage("img/soil4.png");
+  soilImage[5]=loadImage("img/soil5.png");
+  
+  
+ 
 }
+
 
 void draw() {
     /* ------ Debug Function ------ 
@@ -82,12 +115,121 @@ void draw() {
 		rect(0, 160 - GRASS_HEIGHT, width, GRASS_HEIGHT);
 
 		// Soil - REPLACE THIS PART WITH YOUR LOOP CODE!
-		image(soil8x24, 0, 160);
+for(int x=0; x<8; x++ ){
+  for(int y=0; y<4; y++ ){
+    int soilX=soilW*x;
+    int soilY=soilH*y;
+    
+    
+    for(int i = 0; i <6; i++){
+    
+      
+      PImage img= soilImage[i];  
+
+      
+  image(img, soilX, 160+soilY+320*i, soilW, soilH);
+  
+  }
+  
+  }
+  
+  // Stone1
+  for(int i=0; i<count; i++ ){
+    float spacing= width/count;
+    float stone1X= i*spacing;
+    float stone1Y= i*spacing;
+    image(stone1Image,stone1X,160+stone1Y);
+  }
+  // Stone2
+  for(int r=0; r<4; r++){
+  for(int i=0; i<2; i++){
+  for(int j=0; j<2; j++){
+    int stone1Y=160+640+80*r;
+    if(r%3==0){
+      image(stone1Image,80*1+320*i,stone1Y+320*j);
+      image(stone1Image,80*2+320*i,stone1Y+320*j);
+    }else{
+      image(stone1Image,0+320*i,stone1Y+320*j);
+      image(stone1Image,80*3+320*i,stone1Y+320*j);
+    }
+  
+  }
+  } 
+  }
+   // Stone3
+   for(int i=0; i<count; i++ ){
+   for(int k=0; k<3; k++){
+   for(int j=0; j<3; j++){
+    float spacing= width/count;
+    float stone1X= i*spacing;
+    float stone1Y= 160+640+640+640-80-i*spacing;
+    image(stone1Image,stone1X-240*k,stone1Y+240*j);
+  }
+  }
+  }
+   for(int i=0; i<count; i++ ){
+   for(int k=0; k<3; k++){
+   for(int j=0; j<3; j++){
+    float spacing= width/count;
+    float stone1X= i*spacing;
+    float stone1Y= 160+640+640+640-80-i*spacing;
+    image(stone1Image,80+stone1X-240*k,stone1Y+240*j);
+    image(stone2Image,80+stone1X-240*k,stone1Y+240*j);
+  }
+  }
+  }
+  
+  
+}
+
+
 
 		// Player
 
 		// Health UI
 
+
+    //groundhog
+    image(groundhogImage,groundhogX,groundhogY);
+
+
+    // cabbage
+   
+    
+    
+    //life
+    for(int i=0;i<life;i++){
+      image(lifeImage,10+i*size,10);
+      if(cabbageX<groundhogX+80 && cabbageX+80>groundhogX && cabbageY<groundhogY+80 &&cabbageY+80>groundhogY){
+         life=life+1;
+         cabbageX=800;
+         cabbageY=800;
+      }
+      if(life>5)life=5;
+    }
+    
+   
+    
+      if(downPressed){
+        
+        groundhogY += 80;
+        downPressed = false;
+        if(groundhogY >=400) groundhogY = 400;
+      }
+      
+      if(leftPressed){
+        
+        groundhogX -= 80;
+        leftPressed = false;
+        if(groundhogX <=0) groundhogX = 0;
+      }
+      if(rightPressed){
+        
+        groundhogX += 80;
+        rightPressed = false;
+        if(groundhogX >=560) groundhogX = 560;
+      }
+      
 		break;
 
 		case GAME_OVER: // Gameover Screen
@@ -142,7 +284,29 @@ void keyPressed(){
       if(playerHealth < 5) playerHealth ++;
       break;
     }
+     switch(keyCode){
+    case DOWN:
+    downPressed = true;
+    break;
+    case RIGHT:
+    rightPressed = true;
+    break;
+    case LEFT:
+    leftPressed = true;
+    break;
+  }
 }
 
 void keyReleased(){
+  switch(keyCode){
+    case DOWN:
+    downPressed = false;
+    break;
+    case RIGHT:
+    rightPressed = false;
+    break;
+    case LEFT:
+    leftPressed = false;
+    break;
+  }
 }
