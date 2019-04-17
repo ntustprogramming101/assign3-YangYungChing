@@ -27,8 +27,14 @@ float groundhogY=80;
 
 PImage soilImage[] = new PImage[6];
 int soilW=80,soilH=80;
+int Y;
+
 
 int count=8;
+int soilX;
+int soilY;
+int a=0;
+
 
 
 void setup() {
@@ -114,31 +120,43 @@ void draw() {
 		noStroke();
 		rect(0, 160 - GRASS_HEIGHT, width, GRASS_HEIGHT);
 
-		// Soil - REPLACE THIS PART WITH YOUR LOOP CODE!
-for(int x=0; x<8; x++ ){
-  for(int y=0; y<4; y++ ){
-    int soilX=soilW*x;
-    int soilY=soilH*y;
+		
+    //downPressed
+    if(downPressed) {
+      a+=1;
+    if(a>20){
+      a=20;
+    }
     
     
+    
+    }
+    // Soil - REPLACE THIS PART WITH YOUR LOOP CODE!
+    for(int x=0; x<8; x++ ){
+      for(int y=0; y<4; y++ ){
+        soilX=soilW*x;
+        soilY=soilH*y;
     for(int i = 0; i <6; i++){
-    
+     
+      
       
       PImage img= soilImage[i];  
-
+      Y=160+soilY+320*i;
       
-  image(img, soilX, 160+soilY+320*i, soilW, soilH);
+  image(img, soilX, Y-80*a, soilW, soilH);
   
   }
   
   }
-  
+
+    
+    
   // Stone1
   for(int i=0; i<count; i++ ){
     float spacing= width/count;
     float stone1X= i*spacing;
     float stone1Y= i*spacing;
-    image(stone1Image,stone1X,160+stone1Y);
+    image(stone1Image,stone1X,160+stone1Y-80*a);
   }
   // Stone2
   for(int r=0; r<4; r++){
@@ -146,11 +164,11 @@ for(int x=0; x<8; x++ ){
   for(int j=0; j<2; j++){
     int stone1Y=160+640+80*r;
     if(r%3==0){
-      image(stone1Image,80*1+320*i,stone1Y+320*j);
-      image(stone1Image,80*2+320*i,stone1Y+320*j);
+      image(stone1Image,80*1+320*i,stone1Y+320*j-80*a);
+      image(stone1Image,80*2+320*i,stone1Y+320*j-80*a);
     }else{
-      image(stone1Image,0+320*i,stone1Y+320*j);
-      image(stone1Image,80*3+320*i,stone1Y+320*j);
+      image(stone1Image,0+320*i,stone1Y+320*j-80*a);
+      image(stone1Image,80*3+320*i,stone1Y+320*j-80*a);
     }
   
   }
@@ -163,7 +181,7 @@ for(int x=0; x<8; x++ ){
     float spacing= width/count;
     float stone1X= i*spacing;
     float stone1Y= 160+640+640+640-80-i*spacing;
-    image(stone1Image,stone1X-240*k,stone1Y+240*j);
+    image(stone1Image,stone1X-240*k,stone1Y+240*j-80*a);
   }
   }
   }
@@ -173,8 +191,8 @@ for(int x=0; x<8; x++ ){
     float spacing= width/count;
     float stone1X= i*spacing;
     float stone1Y= 160+640+640+640-80-i*spacing;
-    image(stone1Image,80+stone1X-240*k,stone1Y+240*j);
-    image(stone2Image,80+stone1X-240*k,stone1Y+240*j);
+    image(stone1Image,80+stone1X-240*k,stone1Y+240*j-80*a);
+    image(stone2Image,80+stone1X-240*k,stone1Y+240*j-80*a);
   }
   }
   }
@@ -194,7 +212,7 @@ for(int x=0; x<8; x++ ){
 
 
     // cabbage
-   
+    
     
     
     //life
@@ -212,9 +230,15 @@ for(int x=0; x<8; x++ ){
     
       if(downPressed){
         
+      
         groundhogY += 80;
         downPressed = false;
         if(groundhogY >=400) groundhogY = 400;
+        break;
+        
+  
+        
+
       }
       
       if(leftPressed){
