@@ -18,10 +18,10 @@ PImage bg,lifeImage,cabbageImage,groundhogImage,stone1Image,stone2Image,groundho
 boolean upPressed, downPressed, rightPressed, leftPressed;
 
 // For debug function; DO NOT edit or remove this!
-int playerHealth = 0;
+int playerHealth = 2;
 float cameraOffsetY = 0;
 boolean debugMode = false;
-int life=2,lifeDistance=70;
+int lifeDistance=70;
 
 float cabbageX=floor(random(0,8))*80;
 float cabbageY=floor(random(2,6))*80;
@@ -255,10 +255,10 @@ void draw() {
     
     
     //life
-    for(int i=0;i<life;i++){
+    for(int i=0;i<playerHealth;i++){
       image(lifeImage,10+i*lifeDistance,10);
       
-      if(life>5)life=5;
+      if(playerHealth>5)playerHealth=5;
     }
     
    
